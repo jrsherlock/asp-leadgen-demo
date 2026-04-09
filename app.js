@@ -1,12 +1,12 @@
 /* ============================================
    ASP Lead-Gen Demo — App Logic
    ProCircular Attack Surface Profiler
-   Real Andrews University scan data
+   Anonymized demo data
    ============================================ */
 
-// ----- Real Scan Data (andrews.edu attack_surface.json) -----
+// ----- Demo Scan Data -----
 const DEMO_DATA = {
-  organization: { primary_domain: 'andrews.edu', name: 'Andrews University' },
+  organization: { primary_domain: 'acmecorp.com', name: 'Acme Corporation' },
   risk_score: 92,
 
   summary: {
@@ -47,63 +47,63 @@ const DEMO_DATA = {
     { label: 'Typosquats', value: 14, sub: '11 high threat', icon: 'alert-triangle', link: 'typosquats-section', color: '#f97316' }
   ],
 
-  // Endpoints — real web apps from the scan
+  // Endpoints — anonymized web apps
   endpoints: [
-    { url: 'https://andrews.edu', title: 'Andrews University \u2014 Main Site', vulns: { c: 0, h: 2, m: 3 }, status: 'live', tech: 'nginx, Bootstrap, jQuery 1.11.1' },
-    { url: 'https://exchange.andrews.edu', title: 'Microsoft Outlook Web Access 15.2', vulns: { c: 1, h: 3, m: 2 }, status: 'warning', tech: 'IIS 10.0, ASP.NET 4.0, Exchange' },
-    { url: 'https://learninghub.andrews.edu', title: 'Learning Hub \u2014 lighttpd / PHP 5.6.40', vulns: { c: 2, h: 4, m: 1 }, status: 'critical', tech: 'lighttpd 1.4.74, PHP 5.6.40' },
-    { url: 'https://ahsra.andrews.edu', title: 'AHSRA \u2014 WordPress 6.9.4', vulns: { c: 0, h: 1, m: 2 }, status: 'live', tech: 'WordPress 6.9.4, Elementor, PHP' },
-    { url: 'https://vault.andrews.edu', title: 'Vault \u2014 Internal Application', vulns: { c: 0, h: 1, m: 1 }, status: 'live', tech: 'nginx' },
-    { url: 'https://banner.andrews.edu', title: 'Ellucian Banner \u2014 Student Portal', vulns: { c: 0, h: 2, m: 1 }, status: 'live', tech: 'nginx' },
-    { url: 'https://support.andrews.edu', title: 'Zendesk Support Portal', vulns: { c: 0, h: 0, m: 1 }, status: 'live', tech: 'Cloudflare, Zendesk' },
-    { url: 'https://pages.andrews.edu', title: 'HubSpot CMS Landing Pages', vulns: { c: 0, h: 1, m: 0 }, status: 'live', tech: 'Cloudflare, HubSpot' },
-    { url: 'https://amzsend.andrews.edu', title: 'Admin Panel \u2014 PHP 8.1.34', vulns: { c: 0, h: 1, m: 2 }, status: 'warning', tech: 'nginx, PHP 8.1.34' },
-    { url: 'https://alumsend.andrews.edu', title: 'Andrews University Mailer', vulns: { c: 0, h: 0, m: 1 }, status: 'live', tech: 'nginx, PHP 8.4, Bootstrap, jQuery' }
+    { url: 'https://acmecorp.com', title: 'Acme Corporation \u2014 Main Site', vulns: { c: 0, h: 2, m: 3 }, status: 'live', tech: 'nginx, Bootstrap, jQuery 1.11.1' },
+    { url: 'https://mail.acmecorp.com', title: 'Microsoft Outlook Web Access 15.2', vulns: { c: 1, h: 3, m: 2 }, status: 'warning', tech: 'IIS 10.0, ASP.NET 4.0, Exchange' },
+    { url: 'https://training.acmecorp.com', title: 'Training Portal \u2014 lighttpd / PHP 5.6.40', vulns: { c: 2, h: 4, m: 1 }, status: 'critical', tech: 'lighttpd 1.4.74, PHP 5.6.40' },
+    { url: 'https://blog.acmecorp.com', title: 'Company Blog \u2014 WordPress 6.9.4', vulns: { c: 0, h: 1, m: 2 }, status: 'live', tech: 'WordPress 6.9.4, Elementor, PHP' },
+    { url: 'https://vault.acmecorp.com', title: 'Vault \u2014 Internal Application', vulns: { c: 0, h: 1, m: 1 }, status: 'live', tech: 'nginx' },
+    { url: 'https://portal.acmecorp.com', title: 'Employee Portal \u2014 HR System', vulns: { c: 0, h: 2, m: 1 }, status: 'live', tech: 'nginx' },
+    { url: 'https://support.acmecorp.com', title: 'Zendesk Support Portal', vulns: { c: 0, h: 0, m: 1 }, status: 'live', tech: 'Cloudflare, Zendesk' },
+    { url: 'https://pages.acmecorp.com', title: 'HubSpot CMS Landing Pages', vulns: { c: 0, h: 1, m: 0 }, status: 'live', tech: 'Cloudflare, HubSpot' },
+    { url: 'https://notify.acmecorp.com', title: 'Admin Panel \u2014 PHP 8.1.34', vulns: { c: 0, h: 1, m: 2 }, status: 'warning', tech: 'nginx, PHP 8.1.34' },
+    { url: 'https://mailer.acmecorp.com', title: 'Acme Corporation Mailer', vulns: { c: 0, h: 0, m: 1 }, status: 'live', tech: 'nginx, PHP 8.4, Bootstrap, jQuery' }
   ],
   endpoints_total: 148,
 
-  // Breach findings — real credential exposures
+  // Breach findings — anonymized credential exposures
   breaches: [
-    { email: 'daniellegra@andrews.edu', source: 'Infostealer Malware', dataType: 'Plaintext Password', risk: 'critical', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
-    { email: 'kodjo@andrews.edu', source: 'Infostealer Malware', dataType: 'Plaintext Password', risk: 'critical', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
-    { email: 'abrahamw@andrews.edu', source: 'Infostealer Malware', dataType: 'Browser Cookies + Password', risk: 'critical', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
-    { email: 'sthillaa@andrews.edu', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
-    { email: 'hyungk@andrews.edu', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-06', breach: '400KMIX.txt' },
-    { email: 'abrahamw@andrews.edu', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-06', breach: '400KMIX.txt' },
-    { email: 'polk@andrews.edu', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
-    { email: 'abelardo@andrews.edu', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' }
+    { email: 'jsmith@acmecorp.com', source: 'Infostealer Malware', dataType: 'Plaintext Password', risk: 'critical', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
+    { email: 'mwilson@acmecorp.com', source: 'Infostealer Malware', dataType: 'Plaintext Password', risk: 'critical', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
+    { email: 'kpatel@acmecorp.com', source: 'Infostealer Malware', dataType: 'Browser Cookies + Password', risk: 'critical', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
+    { email: 'rchen@acmecorp.com', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
+    { email: 'ljohnson@acmecorp.com', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-06', breach: '400KMIX.txt' },
+    { email: 'kpatel@acmecorp.com', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-06', breach: '400KMIX.txt' },
+    { email: 'dgarcia@acmecorp.com', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' },
+    { email: 'tmartin@acmecorp.com', source: 'Credential Dump', dataType: 'Plaintext Password', risk: 'high', date: '2026-04-03', breach: '@Grafiker27 138GB ULP' }
   ],
   breaches_total: 915,
 
-  // Subdomains — curated live subdomains
+  // Subdomains — anonymized live subdomains
   subdomains: [
-    { name: 'andrews.edu', status: 'live', ip: '143.207.1.30', sources: 'bbot, httpx, shodan' },
-    { name: 'exchange.andrews.edu', status: 'live', ip: '143.207.2.150', sources: 'bbot, shodan, subfinder' },
-    { name: 'webemail.andrews.edu', status: 'live', ip: '143.207.2.150', sources: 'bbot, crt.sh, naabu, shodan' },
-    { name: 'vault.andrews.edu', status: 'live', ip: '143.207.1.57', sources: 'bbot, naabu, shodan' },
-    { name: 'banner.andrews.edu', status: 'live', ip: '143.207.1.74', sources: 'bbot, naabu, shodan' },
-    { name: 'digitalcommons.andrews.edu', status: 'live', ip: '13.57.92.51', sources: 'bbot, crt.sh, shodan' },
-    { name: 'learninghub.andrews.edu', status: 'live', ip: '54.156.168.2', sources: 'bbot, shodan' },
-    { name: 'applydev.andrews.edu', status: 'live', ip: '20.115.232.0', sources: 'bbot, crt.sh, shodan' },
-    { name: 'support.andrews.edu', status: 'live', ip: '216.198.54.6', sources: 'bbot, subfinder' },
-    { name: 'pages.andrews.edu', status: 'live', ip: '199.60.103.28', sources: 'bbot, shodan, subfinder' }
+    { name: 'acmecorp.com', status: 'live', ip: '198.51.XX.30', sources: 'bbot, httpx, shodan' },
+    { name: 'mail.acmecorp.com', status: 'live', ip: '198.51.XX.150', sources: 'bbot, shodan, subfinder' },
+    { name: 'webmail.acmecorp.com', status: 'live', ip: '198.51.XX.150', sources: 'bbot, crt.sh, naabu, shodan' },
+    { name: 'vault.acmecorp.com', status: 'live', ip: '198.51.XX.57', sources: 'bbot, naabu, shodan' },
+    { name: 'portal.acmecorp.com', status: 'live', ip: '198.51.XX.74', sources: 'bbot, naabu, shodan' },
+    { name: 'docs.acmecorp.com', status: 'live', ip: '203.0.XX.51', sources: 'bbot, crt.sh, shodan' },
+    { name: 'training.acmecorp.com', status: 'live', ip: '203.0.XX.2', sources: 'bbot, shodan' },
+    { name: 'staging.acmecorp.com', status: 'live', ip: '203.0.XX.100', sources: 'bbot, crt.sh, shodan' },
+    { name: 'support.acmecorp.com', status: 'live', ip: '203.0.XX.6', sources: 'bbot, subfinder' },
+    { name: 'pages.acmecorp.com', status: 'live', ip: '203.0.XX.28', sources: 'bbot, shodan, subfinder' }
   ],
   subdomains_total: 23190,
 
-  // Open ports & services — real scan data
+  // Open ports & services — anonymized scan data
   ports: [
-    { host: 'exchange.andrews.edu', port: 25, service: 'SMTP', product: 'Microsoft Exchange', status: 'warning', ip: '143.207.2.150' },
-    { host: 'exchange.andrews.edu', port: 443, service: 'HTTPS', product: 'IIS 10.0 / OWA 15.2', status: 'warning', ip: '143.207.2.150' },
-    { host: 'exchange.andrews.edu', port: 587, service: 'SMTP', product: 'Exchange Submission', status: 'warning', ip: '143.207.2.150' },
-    { host: 'ssvpn1.andrews.edu', port: 22, service: 'SSH', product: 'OpenSSH', status: 'warning', ip: '143.207.x.x' },
-    { host: 'ssvpn1.andrews.edu', port: 161, service: 'SNMP', product: 'SNMP Agent', status: 'critical', ip: '143.207.x.x' },
-    { host: 'ssvpn2.andrews.edu', port: 500, service: 'IKE', product: 'VPN Gateway', status: 'warning', ip: '143.207.x.x' },
-    { host: 'jewel.andrews.edu', port: 211, service: 'TCP/211', product: 'Unknown Service', status: 'critical', ip: '143.207.2.37' },
-    { host: 'peter.cs.andrews.edu', port: 53, service: 'DNS', product: 'DNS Server', status: 'warning', ip: '143.207.x.x' },
-    { host: 'pages.andrews.edu', port: 8080, service: 'HTTP', product: 'HubSpot Proxy', status: 'live', ip: '199.60.103.28' },
-    { host: 'pages.andrews.edu', port: 8443, service: 'HTTPS', product: 'HubSpot Proxy', status: 'live', ip: '199.60.103.28' },
-    { host: 'abest.andrews.edu', port: 1701, service: 'L2TP', product: 'L2TP/VPN Tunnel', status: 'critical', ip: '143.207.2.100' },
-    { host: 'itsrdpgateway.cc.andrews.edu', port: 443, service: 'HTTPS', product: 'RDP Gateway / IIS 10.0', status: 'critical', ip: '143.207.2.166' }
+    { host: 'mail.acmecorp.com', port: 25, service: 'SMTP', product: 'Microsoft Exchange', status: 'warning', ip: '198.51.XX.150' },
+    { host: 'mail.acmecorp.com', port: 443, service: 'HTTPS', product: 'IIS 10.0 / OWA 15.2', status: 'warning', ip: '198.51.XX.150' },
+    { host: 'mail.acmecorp.com', port: 587, service: 'SMTP', product: 'Exchange Submission', status: 'warning', ip: '198.51.XX.150' },
+    { host: 'vpn1.acmecorp.com', port: 22, service: 'SSH', product: 'OpenSSH', status: 'warning', ip: '198.51.XX.XX' },
+    { host: 'vpn1.acmecorp.com', port: 161, service: 'SNMP', product: 'SNMP Agent', status: 'critical', ip: '198.51.XX.XX' },
+    { host: 'vpn2.acmecorp.com', port: 500, service: 'IKE', product: 'VPN Gateway', status: 'warning', ip: '198.51.XX.XX' },
+    { host: 'legacy.acmecorp.com', port: 211, service: 'TCP/211', product: 'Unknown Service', status: 'critical', ip: '198.51.XX.37' },
+    { host: 'ns1.acmecorp.com', port: 53, service: 'DNS', product: 'DNS Server', status: 'warning', ip: '198.51.XX.XX' },
+    { host: 'pages.acmecorp.com', port: 8080, service: 'HTTP', product: 'HubSpot Proxy', status: 'live', ip: '203.0.XX.28' },
+    { host: 'pages.acmecorp.com', port: 8443, service: 'HTTPS', product: 'HubSpot Proxy', status: 'live', ip: '203.0.XX.28' },
+    { host: 'remote.acmecorp.com', port: 1701, service: 'L2TP', product: 'L2TP/VPN Tunnel', status: 'critical', ip: '198.51.XX.100' },
+    { host: 'rdpgw.acmecorp.com', port: 443, service: 'HTTPS', product: 'RDP Gateway / IIS 10.0', status: 'critical', ip: '198.51.XX.166' }
   ],
   ports_total: 260,
 
@@ -128,33 +128,33 @@ const DEMO_DATA = {
   ],
   technologies_total: 112,
 
-  // SSL certificates — real posture data
+  // SSL certificates — anonymized posture data
   certificates: [
-    { domain: '*.andrews.edu', expiry: '2027-03-01', status: 'valid', issuer: 'Cloudflare Inc ECC CA-3', issues: 'None' },
-    { domain: 'exchange.andrews.edu', expiry: '2026-11-15', status: 'valid', issuer: 'DigiCert SHA2', issues: 'TLSv1.0 + TLSv1.1 enabled' },
-    { domain: 'applydev.andrews.edu', expiry: '2026-09-20', status: 'valid', issuer: 'Microsoft Azure RSA', issues: 'TLSv1.0 + TLSv1.1 enabled' },
-    { domain: 'learninghub.andrews.edu', expiry: '2026-05-06', status: 'expiring', issuer: "Let's Encrypt R11", issues: 'Expiring in 28 days' },
-    { domain: 'pages.andrews.edu', expiry: '2026-12-01', status: 'valid', issuer: 'Cloudflare Inc ECC CA-3', issues: 'TLSv1.0 + TLSv1.1 enabled' },
-    { domain: 'digitalcommons.andrews.edu', expiry: '2027-01-15', status: 'valid', issuer: 'Amazon RSA 2048', issues: 'None' }
+    { domain: '*.acmecorp.com', expiry: '2027-03-01', status: 'valid', issuer: 'Cloudflare Inc ECC CA-3', issues: 'None' },
+    { domain: 'mail.acmecorp.com', expiry: '2026-11-15', status: 'valid', issuer: 'DigiCert SHA2', issues: 'TLSv1.0 + TLSv1.1 enabled' },
+    { domain: 'staging.acmecorp.com', expiry: '2026-09-20', status: 'valid', issuer: 'Microsoft Azure RSA', issues: 'TLSv1.0 + TLSv1.1 enabled' },
+    { domain: 'training.acmecorp.com', expiry: '2026-05-06', status: 'expiring', issuer: "Let's Encrypt R11", issues: 'Expiring in 28 days' },
+    { domain: 'pages.acmecorp.com', expiry: '2026-12-01', status: 'valid', issuer: 'Cloudflare Inc ECC CA-3', issues: 'TLSv1.0 + TLSv1.1 enabled' },
+    { domain: 'docs.acmecorp.com', expiry: '2027-01-15', status: 'valid', issuer: 'Amazon RSA 2048', issues: 'None' }
   ],
   certificates_total: 27,
 
-  // Typosquats — all 14 real lookalike domains
+  // Typosquats — anonymized lookalike domains
   typosquats: [
-    { domain: 'andrews.com', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Andrews Consulting \u2014 Google Biz' },
-    { domain: 'andrews.net', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Hover Realnames email service' },
-    { domain: 'andrews.org', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Hover Realnames email service' },
-    { domain: 'andrews.info', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: false, note: 'Active web server' },
-    { domain: 'andrews.cc', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Outlook mail protection' },
-    { domain: 'andrews.me', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Mastodon instance' },
-    { domain: 'andrews.io', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'GitHub Pages blog' },
-    { domain: 'andrews.co', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Apache web server' },
-    { domain: 'andrews.us', category: 'TLD Swap', threat: 'high', hasWeb: false, hasMX: true, note: 'Outlook mail protection' },
-    { domain: 'andrews.app', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'LiteSpeed \u2014 Lil\u2019 Playground' },
-    { domain: 'andrews.xyz', category: 'TLD Swap', threat: 'high', hasWeb: false, hasMX: true, note: 'Outlook mail \u2014 email only' },
-    { domain: 'andrews.cloud', category: 'TLD Swap', threat: 'medium', hasWeb: true, hasMX: false, note: 'Redirects to andrews.edu' },
-    { domain: 'andrews.dev', category: 'TLD Swap', threat: 'medium', hasWeb: true, hasMX: false, note: 'Vercel \u2014 dev portfolio' },
-    { domain: 'andrewsedu.com', category: 'Typosquat', threat: 'medium', hasWeb: true, hasMX: false, note: 'Active web server' }
+    { domain: 'acmecorp.net', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Active web + mail server' },
+    { domain: 'acmecorp.org', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Hover Realnames email service' },
+    { domain: 'acmecorp.io', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'GitHub Pages blog' },
+    { domain: 'acmecorp.info', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: false, note: 'Active web server' },
+    { domain: 'acmecorp.co', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Apache web server' },
+    { domain: 'acmecorp.me', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Mastodon instance' },
+    { domain: 'acmecorp.cc', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'Outlook mail protection' },
+    { domain: 'acmecorp.us', category: 'TLD Swap', threat: 'high', hasWeb: false, hasMX: true, note: 'Outlook mail protection' },
+    { domain: 'acmecorp.app', category: 'TLD Swap', threat: 'high', hasWeb: true, hasMX: true, note: 'LiteSpeed server' },
+    { domain: 'acmecorp.xyz', category: 'TLD Swap', threat: 'high', hasWeb: false, hasMX: true, note: 'Outlook mail \u2014 email only' },
+    { domain: 'acmecorp.cloud', category: 'TLD Swap', threat: 'medium', hasWeb: true, hasMX: false, note: 'Redirects to acmecorp.com' },
+    { domain: 'acmecorp.dev', category: 'TLD Swap', threat: 'medium', hasWeb: true, hasMX: false, note: 'Vercel \u2014 dev portfolio' },
+    { domain: 'acme-corp.com', category: 'Typosquat', threat: 'medium', hasWeb: true, hasMX: false, note: 'Active web server' },
+    { domain: 'acmecorps.com', category: 'Typosquat', threat: 'medium', hasWeb: true, hasMX: false, note: 'Parked domain' }
   ],
   typosquats_total: 14,
 
@@ -218,8 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const domainInput = $('#domain-input');
   const leadForm = $('#lead-form');
 
-  // Pre-fill with andrews.edu
-  domainInput.value = 'andrews.edu';
+  // Pre-fill with demo domain
+  domainInput.value = 'acmecorp.com';
 
   scanBtn.addEventListener('click', () => {
     const raw = domainInput.value.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
@@ -243,22 +243,22 @@ document.addEventListener('DOMContentLoaded', () => {
 const PHASE_FEEDS = {
   0: { // Subdomain Discovery
     items: [
-      'andrews.edu', 'www.andrews.edu', 'mail.andrews.edu', 'exchange.andrews.edu',
-      'vault.andrews.edu', 'banner.andrews.edu', 'cas.andrews.edu', 'webemail.andrews.edu',
-      'digitalcommons.andrews.edu', 'ahsra.andrews.edu', 'alumni.andrews.edu',
-      'apply.andrews.edu', 'applydev.andrews.edu', 'applytest.andrews.edu',
-      'support.andrews.edu', 'pages.andrews.edu', 'learninghub.andrews.edu',
-      'bulletin.andrews.edu', 'go.andrews.edu', 'docs.andrews.edu',
-      'gmail.andrews.edu', 'ssvpn1.andrews.edu', 'ssvpn2.andrews.edu',
-      'jewel.andrews.edu', 'abest.andrews.edu', 'alumsend.andrews.edu',
-      'amzsend.andrews.edu', 'socialtest.andrews.edu', 'webdev.andrews.edu',
-      'recruiteradmin.andrews.edu', 'degreeworksdevl.andrews.edu',
-      'peter.cs.andrews.edu', 'itsrdpgateway.cc.andrews.edu',
-      'llubackup.cc.andrews.edu', 'orion.cc.andrews.edu'
+      'acmecorp.com', 'www.acmecorp.com', 'mail.acmecorp.com', 'webmail.acmecorp.com',
+      'vault.acmecorp.com', 'portal.acmecorp.com', 'sso.acmecorp.com', 'vpn.acmecorp.com',
+      'docs.acmecorp.com', 'blog.acmecorp.com', 'alumni.acmecorp.com',
+      'apply.acmecorp.com', 'staging.acmecorp.com', 'dev.acmecorp.com',
+      'support.acmecorp.com', 'pages.acmecorp.com', 'training.acmecorp.com',
+      'wiki.acmecorp.com', 'go.acmecorp.com', 'cdn.acmecorp.com',
+      'api.acmecorp.com', 'vpn1.acmecorp.com', 'vpn2.acmecorp.com',
+      'legacy.acmecorp.com', 'remote.acmecorp.com', 'mailer.acmecorp.com',
+      'notify.acmecorp.com', 'test.acmecorp.com', 'devops.acmecorp.com',
+      'admin.acmecorp.com', 'sandbox.acmecorp.com',
+      'ns1.acmecorp.com', 'rdpgw.acmecorp.com',
+      'backup.acmecorp.com', 'monitor.acmecorp.com'
     ],
     badge: { text: '23,190 found', cls: 'found' },
     consoleLines: [
-      { cmd: 'subfinder', msg: 'Querying 40+ passive sources for andrews.edu' },
+      { cmd: 'subfinder', msg: 'Querying 40+ passive sources for acmecorp.com' },
       { cmd: 'bbot', msg: 'Starting recursive enumeration...' },
       { ok: true, msg: 'crt.sh returned 847 certificate entries' },
       { ok: true, msg: 'subfinder found 312 unique subdomains' },
@@ -282,9 +282,9 @@ const PHASE_FEEDS = {
     consoleLines: [
       { cmd: 'naabu', msg: 'Two-pass scan: top-1000 on 147 live hosts' },
       { info: true, msg: 'Phase 1: Scanning live hosts from httpx results...' },
-      { warn: true, msg: 'SNMP (161/tcp) open on ssvpn1.andrews.edu' },
-      { warn: true, msg: 'RDP Gateway detected on itsrdpgateway.cc.andrews.edu:443' },
-      { crit: true, msg: 'L2TP/VPN tunnel on abest.andrews.edu:1701' },
+      { warn: true, msg: 'SNMP (161/tcp) open on vpn1.acmecorp.com' },
+      { warn: true, msg: 'RDP Gateway detected on rdpgw.acmecorp.com:443' },
+      { crit: true, msg: 'L2TP/VPN tunnel on remote.acmecorp.com:1701' },
       { info: true, msg: 'Phase 2: High-risk probe on remaining hosts...' },
       { ok: true, msg: '260 internet-exposed services across 21 IPs' }
     ]
@@ -302,33 +302,33 @@ const PHASE_FEEDS = {
       { cmd: 'httpx', msg: 'Fingerprinting 148 live web applications' },
       { ok: true, msg: 'Detected nginx on 14 hosts' },
       { warn: true, msg: 'PHP 5.6.40 detected \u2014 end-of-life since 2018' },
-      { info: true, msg: 'Exchange Server 15.2.1748 on exchange.andrews.edu' },
+      { info: true, msg: 'Exchange Server 15.2.1748 on mail.acmecorp.com' },
       { warn: true, msg: 'jQuery 1.11.1 \u2014 known XSS vulnerabilities' },
       { ok: true, msg: '112 unique technology components identified' }
     ]
   },
   3: { // SSL/TLS Analysis
     items: [
-      '*.andrews.edu \u2014 Cloudflare ECC \u2714', 'exchange: TLSv1.0+1.1 enabled',
-      'applydev: TLSv1.0+1.1 enabled', 'pages: TLSv1.0+1.1 enabled',
-      'learninghub: expires in 28 days', 'digitalcommons \u2014 Amazon RSA \u2714'
+      '*.acmecorp.com \u2014 Cloudflare ECC \u2714', 'mail: TLSv1.0+1.1 enabled',
+      'staging: TLSv1.0+1.1 enabled', 'pages: TLSv1.0+1.1 enabled',
+      'training: expires in 28 days', 'docs \u2014 Amazon RSA \u2714'
     ],
     badge: { text: '6 issues', cls: 'warn' },
     consoleLines: [
       { cmd: 'nuclei', msg: 'SSL/TLS template scan on 27 services' },
       { warn: true, msg: '3 services support deprecated TLSv1.0' },
       { warn: true, msg: '3 services support deprecated TLSv1.1' },
-      { warn: true, msg: 'learninghub.andrews.edu cert expiring in 28 days' },
+      { warn: true, msg: 'training.acmecorp.com cert expiring in 28 days' },
       { ok: true, msg: '27 certificates audited, 6 issues found' }
     ]
   },
   4: { // Vulnerability Detection
     items: [
       'CVE-2019-9641 \u2014 PHP (learninghub)', 'CVE-2017-8923 \u2014 PHP (learninghub)',
-      'CVE-2024-3566 \u2014 PHP (learninghub)', 'OpenID endpoint exposed (andrews.edu)',
+      'CVE-2024-3566 \u2014 PHP (training)', 'OpenID endpoint exposed (acmecorp.com)',
       'OAuth endpoint sprayable', 'CISA KEV: CVE-2024-3566',
       'EPSS >50%: 5 vulnerabilities', '4 dangling CNAMEs \u2014 takeover risk',
-      'Exchange OWA exposed', 'Default IIS page on alumni1.andrews.edu'
+      'Exchange OWA exposed', 'Default IIS page on legacy.acmecorp.com'
     ],
     badge: { text: '7 CRITICAL', cls: 'alert' },
     consoleLines: [
@@ -362,14 +362,14 @@ const PHASE_FEEDS = {
   },
   6: { // Brand Risk Analysis
     items: [
-      'andrews.com \u2014 TLD swap (HIGH)', 'andrews.net \u2014 TLD swap (HIGH)',
-      'andrews.org \u2014 TLD swap (HIGH)', 'andrews.io \u2014 GitHub Pages',
-      'andrews.me \u2014 Mastodon instance', 'andrews.cc \u2014 Outlook MX',
-      'andrews.app \u2014 LiteSpeed', 'andrewsedu.com \u2014 Typosquat'
+      'acmecorp.net \u2014 TLD swap (HIGH)', 'acmecorp.org \u2014 TLD swap (HIGH)',
+      'acmecorp.io \u2014 GitHub Pages (HIGH)', 'acmecorp.co \u2014 TLD swap (HIGH)',
+      'acmecorp.me \u2014 Mastodon instance', 'acmecorp.cc \u2014 Outlook MX',
+      'acmecorp.app \u2014 LiteSpeed', 'acme-corp.com \u2014 Typosquat'
     ],
     badge: { text: '11 high threat', cls: 'warn' },
     consoleLines: [
-      { cmd: 'dnstwist', msg: 'Generating domain permutations for andrews.edu' },
+      { cmd: 'dnstwist', msg: 'Generating domain permutations for acmecorp.com' },
       { info: true, msg: 'Checking TLD swaps, homoglyphs, bitsquats...' },
       { warn: true, msg: '14 registered lookalike domains detected' },
       { warn: true, msg: '13 have active web servers' },
