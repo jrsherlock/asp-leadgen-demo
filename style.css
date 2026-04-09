@@ -107,10 +107,8 @@ body {
 }
 
 .header-logo {
-  height: 48px;
+  height: 64px;
   width: auto;
-  filter: brightness(0) invert(1);
-  opacity: 0.95;
 }
 
 .header-divider {
