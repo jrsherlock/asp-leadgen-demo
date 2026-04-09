@@ -105,8 +105,7 @@
     <section id="posture-summary" class="posture-summary anim-section">
       <div class="glass-card posture-card">
         <div class="posture-text">
-          <p><strong>What's working:</strong> Acme Corporation has SPF, DKIM, and DMARC email authentication in place, and core public-facing properties are served behind Cloudflare with valid TLS certificates — a solid foundation for a large organization.</p>
-          <p><strong>What an attacker sees:</strong> A sprawling 23,000+ subdomain footprint with 260 internet-exposed services across 21 IP addresses — many running outdated software including PHP 5.6 (end-of-life since 2018) and jQuery 1.11 with known XSS vectors. One vulnerability is listed in CISA's Known Exploited Vulnerabilities catalog, and 5 more carry a >50% probability of exploitation within 30 days. Most critically, 915 employee credentials have been found in breach databases — 645 of them harvested by infostealer malware from 62 compromised endpoints — giving attackers a ready-made list of passwords to try against VPN, email, and SSO portals. Only 11% of web assets sit behind a WAF, and 4 dangling CNAME records create subdomain takeover opportunities that could be exploited for phishing under the acmecorp.com brand.</p>
+          <!-- Populated dynamically by app.js updatePostureSummary() -->
         </div>
       </div>
     </section>

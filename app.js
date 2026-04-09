@@ -201,11 +201,47 @@ const ICONS = {
 
 function icon(name) { return ICONS[name] || ''; }
 
+// ----- Domain Personalization -----
+// Swaps all 'acmecorp.com' references in demo data to match user's domain
+function personalize(domain) {
+  const parts = domain.split('.');
+  const sld = parts[0]; // e.g., 'yahoo' from 'yahoo.com'
+  const orgName = sld.charAt(0).toUpperCase() + sld.slice(1);
+
+  // Deep-clone and replace in one pass
+  let dataStr = JSON.stringify(DEMO_DATA);
+  dataStr = dataStr.replaceAll('acmecorp', sld);
+  dataStr = dataStr.replaceAll('Acme Corporation', orgName);
+  const data = JSON.parse(dataStr);
+
+  let feedStr = JSON.stringify(PHASE_FEEDS);
+  feedStr = feedStr.replaceAll('acmecorp', sld);
+  const feeds = JSON.parse(feedStr);
+
+  // Fix typosquat entries derived from the SLD
+  const typoEntries = data.typosquats;
+  // Replace the hyphenated typosquat with a plausible variant
+  const hyphenIdx = typoEntries.findIndex(t => t.category === 'Typosquat' && t.domain.includes('-'));
+  if (hyphenIdx >= 0 && sld.length > 3) {
+    const mid = Math.ceil(sld.length / 2);
+    typoEntries[hyphenIdx].domain = sld.slice(0, mid) + '-' + sld.slice(mid) + '.com';
+  }
+  // Replace the plural typosquat
+  const pluralIdx = typoEntries.findIndex(t => t.category === 'Typosquat' && t.domain.endsWith('s.com'));
+  if (pluralIdx >= 0) {
+    typoEntries[pluralIdx].domain = sld + 's.com';
+  }
+
+  return { data, feeds };
+}
+
 // ----- State -----
 const state = {
   phase: 'hero',
   scanDomain: '',
-  phaseIndex: 0
+  phaseIndex: 0,
+  data: null,   // personalized DEMO_DATA
+  feeds: null   // personalized PHASE_FEEDS
 };
 
 // ----- DOM Helpers -----
@@ -218,8 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const domainInput = $('#domain-input');
   const leadForm = $('#lead-form');
 
-  // Pre-fill with demo domain
-  domainInput.value = 'acmecorp.com';
+  // Leave input empty — user types their domain
 
   scanBtn.addEventListener('click', () => {
     const raw = domainInput.value.trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
@@ -324,7 +359,7 @@ const PHASE_FEEDS = {
   },
   4: { // Vulnerability Detection
     items: [
-      'CVE-2019-9641 \u2014 PHP (learninghub)', 'CVE-2017-8923 \u2014 PHP (learninghub)',
+      'CVE-2019-9641 \u2014 PHP (training)', 'CVE-2017-8923 \u2014 PHP (training)',
       'CVE-2024-3566 \u2014 PHP (training)', 'OpenID endpoint exposed (acmecorp.com)',
       'OAuth endpoint sprayable', 'CISA KEV: CVE-2024-3566',
       'EPSS >50%: 5 vulnerabilities', '4 dangling CNAMEs \u2014 takeover risk',
@@ -335,7 +370,7 @@ const PHASE_FEEDS = {
       { cmd: 'nuclei', msg: 'Running 6,900+ templates across live hosts (parallel)' },
       { info: true, msg: 'Phase 1a: CVEs + vulnerabilities + exposed panels' },
       { info: true, msg: 'Phase 1b: Exposures + misconfigurations (parallel)' },
-      { crit: true, msg: 'CVE-2024-3566 on learninghub \u2014 CISA KEV listed!' },
+      { crit: true, msg: 'CVE-2024-3566 on training \u2014 CISA KEV listed!' },
       { crit: true, msg: '7 critical, 75 high-severity findings' },
       { warn: true, msg: '5 findings with EPSS >50% (exploitation likely)' },
       { warn: true, msg: '4 dangling CNAME records \u2014 subdomain takeover risk' },
@@ -344,10 +379,10 @@ const PHASE_FEEDS = {
   },
   5: { // Credential Monitoring
     items: [
-      'daniellegra@ \u2014 Infostealer (plaintext)', 'kodjo@ \u2014 Infostealer (plaintext)',
-      'abrahamw@ \u2014 Browser cookies + pwd', 'sthillaa@ \u2014 Credential dump',
-      'hyungk@ \u2014 Credential dump', 'polk@ \u2014 Credential dump',
-      'abelardo@ \u2014 Credential dump', '... scanning 440 email addresses'
+      'jsmith@ \u2014 Infostealer (plaintext)', 'mwilson@ \u2014 Infostealer (plaintext)',
+      'kpatel@ \u2014 Browser cookies + pwd', 'rchen@ \u2014 Credential dump',
+      'ljohnson@ \u2014 Credential dump', 'dgarcia@ \u2014 Credential dump',
+      'tmartin@ \u2014 Credential dump', '... scanning 440 email addresses'
     ],
     badge: { text: '915 exposed', cls: 'alert' },
     consoleLines: [
@@ -401,6 +436,11 @@ function startScan(domain) {
   state.scanDomain = domain;
   state.phase = 'scanning';
 
+  // Personalize all demo data for the entered domain
+  const { data, feeds } = personalize(domain);
+  state.data = data;
+  state.feeds = feeds;
+
   $('#hero').classList.add('hidden');
   $('#scan-progress').classList.remove('hidden');
   $('#scan-domain-label').textContent = domain;
@@ -411,7 +451,7 @@ function startScan(domain) {
 
 function renderPhasesList() {
   const container = $('#phases-list');
-  container.innerHTML = DEMO_DATA.scanPhases.map((p, i) => `
+  container.innerHTML = state.data.scanPhases.map((p, i) => `
     <div class="phase-row pending" id="phase-${i}">
       <div class="phase-badge">${i + 1}</div>
       <div class="phase-info">
@@ -448,7 +488,7 @@ function consoleLine(obj) {
 }
 
 function runScanPhases() {
-  const phases = DEMO_DATA.scanPhases;
+  const phases = state.data.scanPhases;
   // Randomize durations: 3000–8000ms per phase
   const durations = phases.map(() => 3000 + Math.floor(Math.random() * 5000));
   const totalDuration = durations.reduce((s, d) => s + d, 0);
@@ -466,7 +506,7 @@ function runScanPhases() {
 
     const phase = phases[index];
     const dur = durations[index];
-    const feed = PHASE_FEEDS[index];
+    const feed = state.feeds[index];
     const row = $(`#phase-${index}`);
     const statusEl = $(`#phase-status-${index}`);
     const feedEl = $(`#phase-feed-${index}`);
@@ -561,9 +601,12 @@ function revealResults() {
     setTimeout(() => el.classList.add('visible'), 150 * i);
   });
 
+  // Update posture summary with user's domain
+  updatePostureSummary();
+
   // Animate risk gauge ring + number
   setTimeout(() => {
-    const score = DEMO_DATA.risk_score;
+    const score = state.data.risk_score;
     const circumference = 2 * Math.PI * 52;
     const offset = circumference * (1 - score / 100);
     const fill = $('#gauge-fill');
@@ -579,10 +622,22 @@ function revealResults() {
   }, 200);
 }
 
+// ----- Posture Summary (personalized) -----
+function updatePostureSummary() {
+  const domain = state.scanDomain;
+  const org = state.data.organization.name;
+  const el = document.querySelector('.posture-text');
+  if (!el) return;
+  el.innerHTML = `
+    <p><strong>What's working:</strong> ${escHtml(org)} has SPF, DKIM, and DMARC email authentication in place, and core public-facing properties are served behind Cloudflare with valid TLS certificates \u2014 a solid foundation for a large organization.</p>
+    <p><strong>What an attacker sees:</strong> A sprawling 23,000+ subdomain footprint with 260 internet-exposed services across 21 IP addresses \u2014 many running outdated software including PHP 5.6 (end-of-life since 2018) and jQuery 1.11 with known XSS vectors. One vulnerability is listed in CISA\u2019s Known Exploited Vulnerabilities catalog, and 5 more carry a >50% probability of exploitation within 30 days. Most critically, 915 employee credentials have been found in breach databases \u2014 645 of them harvested by infostealer malware from 62 compromised endpoints \u2014 giving attackers a ready-made list of passwords to try against VPN, email, and SSO portals. Only 11% of web assets sit behind a WAF, and 4 dangling CNAME records create subdomain takeover opportunities that could be exploited for phishing under the ${escHtml(domain)} brand.</p>
+  `;
+}
+
 // ----- Stat Cards -----
 function renderStatCards() {
   const container = $('#stat-cards');
-  container.innerHTML = DEMO_DATA.statCards.map(card => `
+  container.innerHTML = state.data.statCards.map(card => `
     <div class="stat-card" data-link="${card.link}">
       <div class="stat-card-icon-wrap" style="color:${card.color}">${icon(card.icon)}</div>
       <div class="stat-card-value" style="color:${card.color}" data-target="${card.value}">0</div>
@@ -601,7 +656,7 @@ function renderStatCards() {
 
 // ----- Endpoints Table -----
 function renderEndpoints() {
-  const d = DEMO_DATA;
+  const d = state.data;
   const visible = d.endpoints.slice(0, 5);
   const remaining = d.endpoints_total - visible.length;
   $('#endpoints-count').textContent = d.endpoints_total + ' total';
@@ -631,7 +686,7 @@ function renderEndpoints() {
 
 // ----- Breaches Table -----
 function renderBreaches() {
-  const d = DEMO_DATA;
+  const d = state.data;
   const remaining = d.breaches_total - d.breaches.length;
   $('#breaches-count').textContent = d.breaches_total + ' total';
 
@@ -658,7 +713,7 @@ function renderBreaches() {
 
 // ----- Subdomains Table -----
 function renderSubdomains() {
-  const d = DEMO_DATA;
+  const d = state.data;
   const remaining = d.subdomains_total - d.subdomains.length;
   $('#subdomains-count').textContent = d.subdomains_total.toLocaleString() + ' total';
 
@@ -682,7 +737,7 @@ function renderSubdomains() {
 
 // ----- Ports Table -----
 function renderPorts() {
-  const d = DEMO_DATA;
+  const d = state.data;
   const remaining = d.ports_total - d.ports.length;
   $('#ports-count').textContent = d.ports_total + ' total';
 
@@ -706,7 +761,7 @@ function renderPorts() {
 
 // ----- Technologies Grid -----
 function renderTechnologies() {
-  const d = DEMO_DATA;
+  const d = state.data;
   const remaining = d.technologies_total - d.technologies.length;
   $('#tech-count').textContent = d.technologies_total + ' total';
 
@@ -725,7 +780,7 @@ function renderTechnologies() {
 
 // ----- SSL Certificates Table -----
 function renderSSL() {
-  const d = DEMO_DATA;
+  const d = state.data;
   const remaining = d.certificates_total - d.certificates.length;
   $('#ssl-count').textContent = d.certificates_total + ' total';
 
@@ -751,7 +806,7 @@ function renderSSL() {
 
 // ----- Typosquats Table -----
 function renderTyposquats() {
-  const d = DEMO_DATA;
+  const d = state.data;
   $('#typosquats-count').textContent = d.typosquats_total + ' total';
 
   let html = `<table class="data-table">
