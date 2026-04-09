@@ -441,9 +441,17 @@ function startScan(domain) {
   state.data = data;
   state.feeds = feeds;
 
-  $('#hero').classList.add('hidden');
+  // Disable input + button during scan
+  $('#domain-input').disabled = true;
+  $('#scan-btn').disabled = true;
+
   $('#scan-progress').classList.remove('hidden');
   $('#scan-domain-label').textContent = domain;
+
+  // Smooth scroll to the scan progress section
+  setTimeout(() => {
+    $('#scan-progress').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
 
   renderPhasesList();
   runScanPhases();
@@ -583,7 +591,6 @@ function runScanPhases() {
 // ----- Results Reveal -----
 function revealResults() {
   state.phase = 'results';
-  $('#scan-progress').classList.add('hidden');
   $('#results-container').classList.remove('hidden');
   $('#results-domain').textContent = state.scanDomain;
 
