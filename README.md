@@ -29,7 +29,7 @@ Internal demo for ProCircular stakeholders and designers — not production code
 open index.html
 ```
 
-Type a domain (pre-filled with `acmecorp.com`) and click **Scan Now** to see the full experience.
+Type any domain and click **Scan Now** to see the full experience.
 
 ## Files
 
