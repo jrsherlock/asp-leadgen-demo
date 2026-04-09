@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProCircular - Attack Surface Profiler</title>
+  <meta name="description" content="Discover hidden assets, misconfigurations, and vulnerabilities in one comprehensive security scan.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-left">
+        <img src="procircular-logo.png" alt="ProCircular" class="header-logo">
+        <span class="header-divider"></span>
+        <span class="header-tagline">Attack Surface Profiler</span>
+      </div>
+      <div class="header-right">
+        <button class="btn-ghost">Sign In</button>
+        <button class="btn-primary btn-sm">Get Started</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Know your<br>
+        <span class="text-accent">exposure</span><br>
+        attack surface
+      </h1>
+      <p class="hero-subtitle">
+        Discover hidden assets, misconfigurations, and vulnerabilities &mdash; all in one comprehensive security scan.
+      </p>
+      <div class="scan-input-group">
+        <input type="text" id="domain-input" class="scan-input" placeholder="Enter your domain (e.g. company.com)" autocomplete="off" spellcheck="false">
+        <button id="scan-btn" class="btn-scan">
+          <svg class="scan-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          Scan Now
+        </button>
+      </div>
+      <p class="hero-note">Free instant scan &mdash; no account required</p>
+    </div>
+  </section>
+
+  <!-- Scan Progress -->
+  <section id="scan-progress" class="scan-progress hidden">
+    <div class="scan-progress-inner">
+      <div class="scan-header-text">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Scanning: <strong id="scan-domain-label"></strong></span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-bar"></div>
+      </div>
+      <div class="progress-percentage" id="progress-pct">0%</div>
+      <div class="scan-body">
+        <div class="phases-list" id="phases-list"></div>
+        <div class="live-console" id="live-console">
+          <div class="console-header">
+            <span class="console-dot red"></span>
+            <span class="console-dot yellow"></span>
+            <span class="console-dot green"></span>
+            <span class="console-title">scan output</span>
+          </div>
+          <div class="console-body" id="console-body"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Container -->
+  <div id="results-container" class="results-container hidden">
+
+    <!-- Results Header -->
+    <section id="results-header" class="results-header anim-section">
+      <div class="results-title-row">
+        <h2 class="results-title">Report for: <span class="text-accent" id="results-domain"></span></h2>
+      </div>
+      <div class="results-top">
+        <div class="risk-gauge" id="risk-gauge">
+          <div class="risk-gauge-ring">
+            <svg class="risk-gauge-svg" viewBox="0 0 120 120">
+              <circle class="gauge-track" cx="60" cy="60" r="52" />
+              <circle class="gauge-fill" cx="60" cy="60" r="52" id="gauge-fill" />
+            </svg>
+            <div class="risk-gauge-text">
+              <span class="risk-gauge-value" id="risk-gauge-value">0</span>
+              <span class="risk-gauge-max">/100</span>
+            </div>
+          </div>
+          <span class="risk-gauge-label severity-critical">Critical</span>
+        </div>
+        <div class="stat-cards" id="stat-cards"></div>
+      </div>
+    </section>
+
+    <!-- Posture Summary -->
+    <section id="posture-summary" class="posture-summary anim-section">
+      <div class="glass-card posture-card">
+        <div class="posture-text">
+          <p><strong>What's working:</strong> Andrews University has SPF, DKIM, and DMARC email authentication in place, and core public-facing properties are served behind Cloudflare with valid TLS certificates — a solid foundation for a large institution.</p>
+          <p><strong>What an attacker sees:</strong> A sprawling 23,000+ subdomain footprint with 260 internet-exposed services across 21 IP addresses — many running outdated software including PHP 5.6 (end-of-life since 2018) and jQuery 1.11 with known XSS vectors. One vulnerability is listed in CISA's Known Exploited Vulnerabilities catalog, and 5 more carry a >50% probability of exploitation within 30 days. Most critically, 915 employee credentials have been found in breach databases — 645 of them harvested by infostealer malware from 62 compromised endpoints — giving attackers a ready-made list of passwords to try against VPN, email, and SSO portals. Only 11% of web assets sit behind a WAF, and 4 dangling CNAME records create subdomain takeover opportunities that could be exploited for phishing under the andrews.edu brand.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Endpoints -->
+    <section id="endpoints-section" class="data-section anim-section">
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-bar"></div>
+          <h3>Endpoints</h3>
+          <span class="info-tip" data-tooltip="Web applications and services visible from the internet. Each is a potential entry point — outdated software or misconfigurations here are the #1 way attackers gain initial access.">?</span>
+          <span class="section-count" id="endpoints-count"></span>
+        </div>
+        <div class="table-wrap" id="endpoints-table"></div>
+      </div>
+    </section>
+
+    <!-- Breach Findings -->
+    <section id="breaches-section" class="data-section anim-section">
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-bar"></div>
+          <h3>Breach Findings</h3>
+          <span class="info-tip" data-tooltip="Employee credentials found in dark web breach databases and infostealer malware logs. Attackers use these for credential stuffing against VPN, email, and SSO portals — often successfully when passwords are reused.">?</span>
+          <span class="section-count" id="breaches-count"></span>
+        </div>
+        <div class="table-wrap" id="breaches-table"></div>
+      </div>
+    </section>
+
+    <!-- Subdomains + Open Ports -->
+    <section id="dual-section" class="data-section dual-section anim-section">
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-bar"></div>
+          <h3>Subdomains</h3>
+          <span class="info-tip" data-tooltip="Every subdomain is a door into your network. Forgotten dev servers, test environments, and legacy apps are prime targets because they're often unpatched and unmonitored.">?</span>
+          <span class="section-count" id="subdomains-count"></span>
+        </div>
+        <div class="table-wrap" id="subdomains-table"></div>
+      </div>
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-bar"></div>
+          <h3>Open Ports &amp; Services</h3>
+          <span class="info-tip" data-tooltip="Network services exposed to the internet. High-risk services like RDP, SNMP, FTP, and VPN gateways are routinely targeted by automated scanners and ransomware operators.">?</span>
+          <span class="section-count" id="ports-count"></span>
+        </div>
+        <div class="table-wrap" id="ports-table"></div>
+      </div>
+    </section>
+
+    <!-- Technologies -->
+    <section id="tech-section" class="data-section anim-section">
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-bar"></div>
+          <h3>Technologies</h3>
+          <span class="info-tip" data-tooltip="Software, frameworks, and platforms detected on your external assets. End-of-life versions like PHP 5.6 and outdated libraries with known CVEs give attackers a roadmap to exploit.">?</span>
+          <span class="section-count" id="tech-count"></span>
+        </div>
+        <div class="tech-grid" id="tech-grid"></div>
+      </div>
+    </section>
+
+    <!-- SSL Certificates -->
+    <section id="ssl-section" class="data-section anim-section">
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-bar"></div>
+          <h3>SSL Certificates</h3>
+          <span class="info-tip" data-tooltip="TLS/SSL certificates that encrypt traffic to your services. Expired certs break user trust, and deprecated protocols like TLSv1.0/1.1 are vulnerable to known downgrade attacks.">?</span>
+          <span class="section-count" id="ssl-count"></span>
+        </div>
+        <div class="table-wrap" id="ssl-table"></div>
+      </div>
+    </section>
+
+    <!-- Typosquats -->
+    <section id="typosquats-section" class="data-section anim-section">
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-bar"></div>
+          <h3>Potential Typosquats</h3>
+          <span class="info-tip" data-tooltip="Lookalike domains registered by third parties that could be confused with yours. Attackers use these for phishing emails, credential harvesting, and brand impersonation — especially when they have active mail servers.">?</span>
+          <span class="section-count" id="typosquats-count"></span>
+        </div>
+        <div class="table-wrap" id="typosquats-table"></div>
+      </div>
+    </section>
+
+    <!-- Lead Capture CTA -->
+    <section id="lead-capture" class="lead-capture anim-section">
+      <div class="lead-capture-inner">
+        <svg class="lead-lock-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h2 class="lead-title">Unlock the Full Report</h2>
+        <p class="lead-subtitle">Get complete visibility into your organization's attack surface with a detailed intelligence dossier.</p>
+        <form id="lead-form" class="lead-form" novalidate>
+          <div class="lead-fields">
+            <input type="text" name="name" placeholder="Full Name" required class="lead-input">
+            <input type="email" name="email" placeholder="Work Email" required class="lead-input">
+            <input type="text" name="company" placeholder="Company" required class="lead-input">
+          </div>
+          <button type="submit" class="btn-lead">Get Full Report</button>
+        </form>
+        <p class="lead-fine-print">No credit card required. Free security snapshot.</p>
+        <p class="lead-disclaimer">By submitting, you agree to receive occasional security intelligence briefings from ProCircular and consent to being contacted by our team regarding your results.</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>Powered by <strong>ProCircular</strong> Attack Surface Profiler &copy; 2026</p>
+    </footer>
+
+  </div>
+
+  <!-- Toast container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
