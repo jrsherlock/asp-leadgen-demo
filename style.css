@@ -802,7 +802,10 @@ body {
 
 .info-tip::after {
   content: attr(data-tooltip);
-  position: fixed;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
   width: 320px;
   padding: 14px 16px;
   background: #1a1a2e;
@@ -820,8 +823,6 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
-  top: var(--tip-top, 0);
-  left: var(--tip-left, 0);
 }
 
 .info-tip:hover::after {

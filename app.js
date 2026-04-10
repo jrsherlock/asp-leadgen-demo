@@ -881,14 +881,7 @@ function showToast(message) {
   setTimeout(() => toast.remove(), 3200);
 }
 
-// ----- Tooltip Positioning -----
-document.addEventListener('mouseover', (e) => {
-  const tip = e.target.closest('.info-tip');
-  if (!tip) return;
-  const rect = tip.getBoundingClientRect();
-  tip.style.setProperty('--tip-top', (rect.bottom + 10) + 'px');
-  tip.style.setProperty('--tip-left', Math.max(16, Math.min(rect.left - 10, window.innerWidth - 340)) + 'px');
-});
+// ----- Tooltip Positioning (handled via CSS absolute positioning) -----
 
 // ----- Domain Validation -----
 function isValidDomain(str) {
