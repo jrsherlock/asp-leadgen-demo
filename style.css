@@ -774,7 +774,6 @@ body {
 .section-header h3 {
   font-size: 1rem;
   font-weight: 600;
-  flex: 1;
 }
 
 /* Info Tooltips */
